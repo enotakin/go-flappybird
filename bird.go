@@ -19,15 +19,11 @@ type Bird struct {
 	animationCounter int
 }
 
-func (b *Bird) Draw(screen *ebiten.Image, scale float64) {
-	// TODO: calculate frame index from delta time
-	b.animationCounter++
-	const framesPerTexture = 15
-	if b.animationCounter >= framesPerTexture {
-		b.animationCounter = 0                      // сброс счётчика
-		b.frame = (b.frame + 1) % len(BirdTextures) // переключение кадра
-	}
+func NewBird() *Bird {
+	return &Bird{posX: screenWidth * 0.235, posY: screenHeight * 0.5, acceleration: 460, radius: 6}
+}
 
+func (b *Bird) Draw(screen *ebiten.Image, scale float64) {
 	opts := &ebiten.DrawImageOptions{}
 	opts.GeoM.Translate(-b.radius, -b.radius)
 	opts.GeoM.Rotate(Radians(b.rotation))
@@ -38,6 +34,14 @@ func (b *Bird) Draw(screen *ebiten.Image, scale float64) {
 }
 
 func (b *Bird) Update(deltaTime float64) {
+	// TODO: try better way to calculate frame index
+	b.animationCounter++
+	const framesPerTexture = 15
+	if b.animationCounter >= framesPerTexture {
+		b.animationCounter = 0                      // сброс счётчика
+		b.frame = (b.frame + 1) % len(BirdTextures) // переключение кадра
+	}
+
 	// TODO: create input module
 	if ebiten.IsKeyPressed(ebiten.KeySpace) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
 		b.velocity = -100

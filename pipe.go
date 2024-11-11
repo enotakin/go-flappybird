@@ -3,7 +3,6 @@ package main
 import "github.com/hajimehoshi/ebiten/v2"
 
 type Pipe struct {
-	// Physics
 	posX, posY     float64
 	scaleX, scaleY float64
 }
