@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -11,13 +12,14 @@ const (
 	screenWidth  = 160
 	screenHeight = 240
 	scale        = 3
-	groundSpeed  = 0.5
+	speed        = 30
 )
 
 type Game struct {
 	background *ebiten.Image
-	ground     *Ground
+	barrier    *Barrier
 	bird       *Bird
+	ground     *Ground
 
 	running        bool
 	lastUpdateTime time.Time
@@ -25,12 +27,13 @@ type Game struct {
 
 func (g *Game) Update() error {
 	if g.running {
-		deltaTime := time.Since(g.lastUpdateTime)
-		g.lastUpdateTime = time.Now()
-		delta := deltaTime.Seconds()
+		deltaTime := 1 / float64(ebiten.TPS())
 
-		g.ground.Update(delta)
-		g.bird.Update(delta)
+		g.ground.Update(deltaTime)
+		g.barrier.Update(deltaTime)
+		g.bird.Update(deltaTime)
+
+		fmt.Println(deltaTime)
 	}
 	return nil
 }
@@ -46,7 +49,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	opts.GeoM.Scale(scale, scale)
 	screen.DrawImage(BackgroundTexture, opts)
 
-	// TODO pipe
+	g.barrier.Draw(screen, scale)
 	g.bird.Draw(screen, scale)
 	g.ground.Draw(screen, scale)
 }
@@ -58,6 +61,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 func NewGame() *Game {
 	game := &Game{running: true, lastUpdateTime: time.Now()}
 	game.ground = NewGround()
+	game.barrier = NewBarrier()
 	game.bird = &Bird{posX: screenWidth * 0.235, posY: screenHeight * 0.5, acceleration: 460, radius: 6}
 	return game
 }

@@ -36,7 +36,7 @@ func (g *Ground) Draw(screen *ebiten.Image, scale float64) {
 
 func (g *Ground) Update(delta float64) {
 	for s := g.head; s != nil; s = s.next {
-		s.posX -= 30 * delta
+		s.posX -= speed * delta
 	}
 
 	if g.head != nil && !g.head.IsInSight() {

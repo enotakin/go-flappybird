@@ -9,6 +9,7 @@ import (
 var (
 	BackgroundTexture = loadTexture("assets/background.png")
 	GroundTexture     = loadTexture("assets/ground.png")
+	PipeTexture       = loadTexture("assets/pipe.png")
 	BirdTextures      = loadVertTextures("assets/bird.png", 4, 17, 12)
 )
 
