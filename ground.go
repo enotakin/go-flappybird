@@ -21,7 +21,7 @@ func NewGround() *Ground {
 	return g
 }
 
-func (g *Ground) Draw(screen *ebiten.Image, scale float64) error {
+func (g *Ground) Draw(screen *ebiten.Image, scale float64) {
 	for s := g.head; s != nil; s = s.next {
 		if s.IsInSight() {
 			opts := &ebiten.DrawImageOptions{}
@@ -32,7 +32,6 @@ func (g *Ground) Draw(screen *ebiten.Image, scale float64) error {
 			screen.DrawImage(GroundTexture, opts)
 		}
 	}
-	return nil
 }
 
 func (g *Ground) Update(delta float64) {

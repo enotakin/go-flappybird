@@ -9,7 +9,7 @@ import (
 var (
 	BackgroundTexture = loadTexture("assets/background.png")
 	GroundTexture     = loadTexture("assets/ground.png")
-	BirdTextures      = loadTextures("assets/bird.png", 4, 17, 12)
+	BirdTextures      = loadVertTextures("assets/bird.png", 4, 17, 12)
 )
 
 func loadTexture(path string) *ebiten.Image {
@@ -20,13 +20,26 @@ func loadTexture(path string) *ebiten.Image {
 	return tex
 }
 
-func loadTextures(path string, amount, width, height int) []*ebiten.Image {
+func loadVertTextures(path string, amount, width, height int) []*ebiten.Image {
 	texture := loadTexture(path)
 
 	textures := make([]*ebiten.Image, amount)
 	for index := 0; index < amount; index++ {
-		y := index * height
-		frame := texture.SubImage(image.Rect(0, y, width, y+height)).(*ebiten.Image)
+		yOffset := index * height
+		frame := texture.SubImage(image.Rect(0, yOffset, width, yOffset+height)).(*ebiten.Image)
+		textures[index] = frame
+	}
+
+	return textures
+}
+
+func loadHorizTextures(path string, amount, width, height int) []*ebiten.Image {
+	texture := loadTexture(path)
+
+	textures := make([]*ebiten.Image, amount)
+	for index := 0; index < amount; index++ {
+		xOffset := index * width
+		frame := texture.SubImage(image.Rect(xOffset, 0, xOffset+width, height)).(*ebiten.Image)
 		textures[index] = frame
 	}
 

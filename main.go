@@ -56,7 +56,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func NewGame() *Game {
-	game := &Game{lastUpdateTime: time.Now()}
+	game := &Game{running: true, lastUpdateTime: time.Now()}
 	game.ground = NewGround()
 	game.bird = &Bird{posX: screenWidth * 0.235, posY: screenHeight * 0.5, acceleration: 460, radius: 6}
 	return game
@@ -67,7 +67,6 @@ func main() {
 	ebiten.SetWindowTitle("FlappyBird")
 
 	game := NewGame()
-	game.running = true
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}

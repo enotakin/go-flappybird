@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -20,7 +19,8 @@ type Bird struct {
 	animationCounter int
 }
 
-func (b *Bird) Draw(screen *ebiten.Image, scale float64) error {
+func (b *Bird) Draw(screen *ebiten.Image, scale float64) {
+	// TODO: calculate frame index from delta time
 	b.animationCounter++
 	const framesPerTexture = 15
 	if b.animationCounter >= framesPerTexture {
@@ -35,14 +35,15 @@ func (b *Bird) Draw(screen *ebiten.Image, scale float64) error {
 	opts.GeoM.Translate(b.posX*scale, b.posY*scale)
 
 	screen.DrawImage(BirdTextures[b.frame], opts)
-	return nil
 }
 
 func (b *Bird) Update(deltaTime float64) {
+	// TODO: create input module
 	if ebiten.IsKeyPressed(ebiten.KeySpace) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
 		b.velocity = -100
 	}
 
+	// TODO: make many const + calc physics
 	b.velocity += b.acceleration * deltaTime
 	if b.velocity > 200 {
 		b.velocity = 200
@@ -64,6 +65,4 @@ func (b *Bird) Update(deltaTime float64) {
 			b.rotation = 90
 		}
 	}
-
-	fmt.Println(b.velocity)
 }
